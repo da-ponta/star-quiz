@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<meta charset='utf-8'>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="/javascripts/manage.js"></script>
+    <style type="text/css">
+html,body,section,form{
+	width: 100%;
+	height:100%;
+	margin:0;
+	padding: 0;
+}
+.pages > section{
+display: none;
+}
+#title{display: block;width: 100%;height: 10%;margin:0;padding: 0;}
+.clearfix:after{
+	content:"";
+	display: blcok;
+	visibility: hidden;
+	clear: both;
+}
+#manage{
+	display: block;
+}
+#answer_check_page div{
+	background-color: #2222ff;
+	border: 3px solid #6666ff;
+	color:white;
+	font-size: 120%;
+	margin-top: 3px;
+	line-height: 2em;
+}
+    </style>
+  </head>
+  <body>
+    <section class="pages">
+	    <section id="manage">
+	    <h1 id="title">管理するよ<span>第<span id="q"><%= q%></span>問s</span></h1>
+	    	<form class="clearfix">
+		    	<input id="ready_go" type="button" value="レディゴー">
+		    	<input id="reafy_off" type="button" value="ストップ">
+		    	<input id="ready_cancel" type="button" value="キャンセル">
+		    	<input id="answer_check" type="button" value="アンサーチェック">
+		    </form>
+	    </section>
+	    <section id="answer_check_page">
+
+	    </section>
+    </section>
+
+  </body>
+</html>

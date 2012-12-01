@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<meta charset='utf-8'>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="/javascripts/client.js"></script>
+    <style type="text/css">
+html,body,section,form{
+	width: 100%;
+	height:100%;
+	margin:0;
+	padding: 0;
+}
+.pages > section{
+display: none;
+}
+#title{display: block;width: 100%;height: 10%;margin:0;padding: 0;}
+.clearfix:after{
+	content:"";
+	display: blcok;
+	visibility: hidden;
+	clear: both;
+}
+#answer{position: relative;}
+#answer input{
+	display: block;
+	height: 45%;
+	width: 50%;
+	color: white;
+	float: left;
+	font-size: 25px;
+	text-shadow: 2px 2px 1px #222;
+}
+.red{
+	background-color: #f00;
+}
+.blue{
+	background-color: #0f0;
+}
+.green{
+	background-color: #00f;
+}
+.yellow{
+	background-color: #ff0;
+}
+#login_page{
+	display: block;
+}
+#count_down{
+	position: absolute;
+width: 30px;
+height: 30px;
+margin-left: -18px;
+margin-top: -38px;
+left: 50%;
+top: 50%;
+border: 3px solid #222;
+background-color: #EEE;
+border-radius: 5px;
+line-height: 30px;
+text-align: center;
+}
+    </style>
+  </head>
+  <body>
+    <section class="pages">
+	    <h1 id="title"><%= title %><span>第<span id="q">1</span>問</span></h1>
+	    <section id="login_page">
+	    	<form><input type="text" id="username" required><input type="button" id="login" value="LOGIN"></form>
+	    </section>
+	    <section id="wait">
+	    	<div id="last_answer"></div>
+	    		wait...
+	    </section>
+	    <section id="answer" title="answer">
+	    	<form class="clearfix">
+	    	<input type="button" value="1" class="red">
+	    	<input type="button" value="2" class="blue">
+	    	<input type="button" value="3" class="green">
+	    	<input type="button" value="4" class="yellow">
+	    	<div id="count_down"></div>
+	    	</form>
+	    </section>
+    </section>
+    <!--<h1><%= 'title' %></h1>
+    <p>Welcome to <%= title %></p>
+    <form>
+    	<input id="text" type="text" ><input id="send" type="submit" value="send">
+    </form>
+    <div id="chatBody">
+
+    </div>-->
+
+
+  </body>
+</html>
