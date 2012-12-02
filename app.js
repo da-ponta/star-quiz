@@ -97,7 +97,7 @@ socket.on('connection', function(client) {
 /**
 mongo connection
 */
-mongoose.connect('mongodb://-',function(e){
+mongoose.connect('mongodb://yuta0103:yuta0103@alex.mongohq.com:10073/quiz',function(e){
   if (e) throw e;
 });
 var Schema = mongoose.Schema
@@ -148,7 +148,7 @@ var app = express();
  
 
 app.configure(function() {
-  app.set('port', process.env.PORT || 3000);
+  app.set('port', process.env.PORT || 80);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
   app.use(express.favicon());
@@ -212,9 +212,16 @@ app.post('/answer_check',function(req, res) {
 })
 
 app.post('/result', function(req, res) {
-  AnswerLists.sort(function(c1,c2){
+  var corrects = new Array();
+  console.log(AnswerLists);
+  for (var i in AnswerLists) {
+    var user = AnswerLists[i];
+    var ans = null;
+    corrects.push(user);
+  };
+  corrects.sort(function(c1,c2){
     if (c1.point == c2.point)
-      return c1.diff - c2.diff;
+      return c1.time - c2.time;
     else
       return c2.point - c1.point;
   });
@@ -312,6 +319,7 @@ io.of('/question').on('connection', function(socket) {
     var client = io.of("/answer");//sockets;
     if (state == 'ready_go'&&!OPEN_FLAG) {
       CURRENT_QUESTION++;
+      if (CURRENT_QUESTION>=CORRECT_ANSWER.length) CURRENT_QUESTION = 0;
       REGIST_DATES[CURRENT_QUESTION] = new Date();
       OPEN_FLAG = true;
       client.emit('state','ready');
