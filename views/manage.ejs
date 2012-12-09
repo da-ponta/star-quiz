@@ -2,6 +2,7 @@
 <html>
   <head>
   	<meta charset='utf-8'>
+  	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
@@ -34,6 +35,8 @@ display: none;
 	font-size: 120%;
 	margin-top: 3px;
 	line-height: 2em;
+	padding: 0 10px;
+	height: 2em;
 }
     </style>
   </head>
@@ -47,6 +50,7 @@ display: none;
 		    	<input id="ready_cancel" type="button" value="問題キャンセル">
 		    	<input id="answer_check" type="button" value="アンサーチェック">
 		    	<input id="answer_result" type="button" value="結果発表！">
+			    <div id="count_down"></div>
 		    </form>
 	    </section>
 	    <section id="answer_check_page">

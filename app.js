@@ -326,6 +326,7 @@ io.of('/question').on('connection', function(socket) {
       var count = 10;
       timeout = setInterval(function() {
         client.emit('count_down', count);
+        socket.emit('count_down', count);
         count--;
         if (count<0) {
           changeState('ready_off');

@@ -64,9 +64,10 @@ $(function(){
 	$("#answer input").click(function(){
 		if (!ready) return false;
 		ready = false;
-	    socket.emit("answer",json({answer : $(this).val()}));
 	    $("#answer").hide();
+		$("#wait").show();
 	    $("#last_answer").text("選択した回答　：　"+$(this).val());
+	    socket.emit("answer",json({answer : $(this).val()}));
 	});
 	socket.on("state", function(res){
 		console.log(res);
