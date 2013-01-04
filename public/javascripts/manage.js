@@ -1,23 +1,39 @@
 var ready = false;
 var name;
 $(function(){
-	var socket = io.connect('localhost/question', { port: 80 });
-	var socket_g = io.connect('localhost', { port: 80 });
+	var socket = io.connect(location.host+'/question', { port: 3000 });
+	var socket_g = io.connect(location.host, { port: 3000 });
     json = JSON.stringify;
 	$("#ready_go").click(function(){
+		$("input").attr("disabled","disabled");
+		$("#reafy_off").attr("disabled","");
+		$("#ready_cancel").attr("disabled","");
 		socket.emit('state','ready_go');
 		return false;
 	});
-	$("#ready_off").click(function(){
+	
+	$("#reafy_off").click(function(){
 		socket.emit('state','ready_off');
+		 $("input").attr("disabled","disabled");
+		$("#answer_check").attr("disabled","");
+ $("#answer_check_test").attr("disabled","");
+ $("#test_answer").attr("disabled","");
+
 		return false;
 	});
 	$("#ready_cancel").click(function(){
+		$("#ready_go").attr("disabled","");
 		socket.emit('state','ready_cancel');
 		return false;
 	});
+$("#reset").click(function(){
+if (!confirm("リセット大丈夫ですか？"))return false;
+                socket.emit('state','reset');                return false;        });
 
 	function showCorrectUser(res) {
+		$("#ready_go").attr("disabled","");
+		$("#reset").attr("disabled","");
+		$("#answer_result").attr("disabled","");
 		console.log(res);
 		if (!res || res.length == 0) {
 			$("#answer_check_page").append("<div>正解者なし</div>")
@@ -52,6 +68,32 @@ $(function(){
 		})
 		return false;
 	});
+
+
+$("#answer_check_test").click(function(){
+        var ans=($("#test_answer").val())?$("#test_answer").val():2; 
+	$("input").attr("disabled","disabled");
+        $("#reset").attr("disabled","");        
+	$("#manage").hide();
+                $("#answer_check_page").show();
+                $("#answer_check_page *").remove();
+                //showCorrectUser([{name:"test", time:1},{name:"test", time:1},{name:"test", time:1},{name:"test", time:1}]);
+                //return;
+
+                $.ajax({
+                        url:"/answer_check_test",
+                        data:{a:ans},
+			dataType:"json",
+                        type:"POST",
+                        success:showCorrectUser,
+                        error:function(a,b,c){
+                        console.log(a,b,c)
+                        }
+                })
+                return false;
+        });
+
+
 	$("#answer_result").click(function(){
 		$("#manage").hide();
 		$("#answer_check_page").show();
@@ -85,5 +127,11 @@ $(function(){
 	});
 	socket.on('count_down', function(res){
 		$("#count_down").text(res);
+		if (res==0) {
+			 $("input").attr("disabled","disabled");
+	                $("#answer_check").attr("disabled","");
+			 $("#test_answer").attr("disabled","");
+
+		}
 	})
 });

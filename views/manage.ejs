@@ -45,12 +45,14 @@ display: none;
 	    <section id="manage">
 	    <h1 id="title">管理するよ<span>第<span id="q"><%= q%></span>問s</span></h1>
 	    	<form class="clearfix">
-		    	<input id="ready_go" type="button" value="レディゴー">
-		    	<input id="reafy_off" type="button" value="回答ストップ">
-		    	<input id="ready_cancel" type="button" value="問題キャンセル">
-		    	<input id="answer_check" type="button" value="アンサーチェック">
-		    	<input id="answer_result" type="button" value="結果発表！">
+		    	<input id="ready_go" type="button" value="レディゴー（回答スタート）">
+		    	<input id="reafy_off" type="button" value="回答ストップ（Waitモードへ）">
+		    	<input id="ready_cancel" type="button" value="問題キャンセル（Waitへ＋出題状態キャンセル）">
+		    	<input id="answer_check" type="button" value="アンサーチェック（正答者チェックとポイント加算）">
+		    	<input id="answer_result" type="button" value="結果発表！累計ポイントと時間">
+<input id="reset" type="button" value="リセット　すべての回答がクリアされる">
 			    <div id="count_down"></div>
+ <input id="test_answer" type="text" placeholder="テストの正答番号を入れて右のボタンをクリック"><input id="answer_check_test" type="button" value="TESTチェック">
 		    </form>
 	    </section>
 	    <section id="answer_check_page">

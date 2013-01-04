@@ -63,7 +63,7 @@ var server;
 console.log("test start");
 //if (!module.parent) {
 server = http.createServer(app)
-server.listen(8080);
+server.listen(3000);
 //  app.listen(8080);
 console.log("Express server listening on port %d", 8080);
 //}
@@ -138,7 +138,7 @@ sample.save(function(e){
 })*/
 var AnswerLists = {};
 var CURRENT_QUESTION = -1;
-var CORRECT_ANSWER = [1,2,3,4];//TODO set as property
+var CORRECT_ANSWER = [2,4,4,4,4,4,1,2,4,2,3,3,2,1,4,3,2,4,3,3,4,3,1,2];//TODO set as property
 var REGIST_DATES = [];
 var OPEN_FLAG = false;
 /*end*/
@@ -148,7 +148,7 @@ var app = express();
  
 
 app.configure(function() {
-  app.set('port', process.env.PORT || 80);
+  app.set('port', process.env.PORT || 3000);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
   app.use(express.favicon());
@@ -176,7 +176,7 @@ app.get('/answer', function(req, res) {
 });
 
 app.get('/question', function(req, res) {
-  res.render('manage', { locals: { port: app.get('port'),title:"問題",q:CURRENT_QUESTION } });
+  res.render('manage', { locals: { port: app.get('port'),title:"問題",q:CURRENT_QUESTION +2} });
 });
 app.post('/answer_check',function(req, res) {
   if (CURRENT_QUESTION < 0) return;
@@ -210,6 +210,42 @@ app.post('/answer_check',function(req, res) {
   res.setHeader('Content-Length', body.length);
   res.end(body);
 })
+
+var test_answer = 1;
+app.post('/answer_check_test',function(req, res) {
+  if (CURRENT_QUESTION < 0) return;
+  test_answer = req.body.a;
+  var corrects = new Array();
+  console.log(AnswerLists);
+  for (var i in AnswerLists) {
+    var user = AnswerLists[i];
+    var ans = null;
+    for (var a in user.answer) {
+      if (user.answer[a].question_id == 0) {
+        ans = user.answer[a];
+        break;
+      }
+    }
+    if (ans && ans.number == test_answer) {
+      var diff = ans.regist_date - REGIST_DATES[CURRENT_QUESTION];
+      //user.point++;
+      //user.time += diff/1000;
+      //user.save(function(e){
+      //  if(!e) console.log(e);
+      //});
+      corrects.push({name:user.name, time:diff / 1000});
+    }
+  };
+  corrects.sort(function(c1,c2){
+    return c1.time - c2.time;
+  });
+  //res.render('question', { locals: { port: app.get('port'), corrects: corrects} });
+  var body = JSON.stringify(corrects);
+  res.setHeader('Content-Type', 'application/json');
+  res.setHeader('Content-Length', body.length);
+  res.end(body);
+})
+
 
 app.post('/result', function(req, res) {
   var corrects = new Array();
@@ -323,7 +359,7 @@ io.of('/question').on('connection', function(socket) {
       REGIST_DATES[CURRENT_QUESTION] = new Date();
       OPEN_FLAG = true;
       client.emit('state','ready');
-      var count = 10;
+      var count = 60;
       timeout = setInterval(function() {
         client.emit('count_down', count);
         socket.emit('count_down', count);
@@ -336,13 +372,31 @@ io.of('/question').on('connection', function(socket) {
     } else if (state == 'ready_off'&&OPEN_FLAG) {
       OPEN_FLAG = false;
       client.emit('state', 'wait');
+	clearInterval(timeout);
     } else if (state == 'ready_cancel'&&OPEN_FLAG) {
       OPEN_FLAG = false;
       client.emit('state', 'wait');
       CURRENT_QUESTION--;
+	clearInterval(timeout);
+    } else if (state == 'reset') {
+	client.emit('state', 'wait');
+	if (CURRENT_QUESTION < 0) return;
+            var corrects = new Array();
+            console.log(AnswerLists);
+            for (var i in AnswerLists) {
+                var user = AnswerLists[i];
+                user.point = 0;
+                user.time = 0;
+                user.answer=[];
+                user.save(function(e){
+                    if(!e) console.log(e);
+                });
+	        console.log(user)
+            };
+       CURRENT_QUESTION = -1;	
     }
-    client.emit('q', CURRENT_QUESTION);
-    socket.emit('q',CURRENT_QUESTION);
+    client.emit('q', CURRENT_QUESTION+1);
+    socket.emit('q',CURRENT_QUESTION+1);
   };
   socket.on('state', changeState);
 });

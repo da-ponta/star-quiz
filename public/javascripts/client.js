@@ -1,7 +1,7 @@
 var ready = false;
 var name;
 $(function(){
-	var socket = io.connect('localhost/answer', { port: 80 });//new io.Socket('localhost',{port:3000}),
+	var socket = io.connect(location.host+'/answer', { port: 3000 });//new io.Socket('localhost',{port:3000}),
     json = JSON.stringify;
 	/*socket.on('message', function(message) {
 	  	message = JSON.parse(message);
