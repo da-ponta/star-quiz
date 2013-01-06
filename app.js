@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -172,7 +171,7 @@ app.configure('development', function(){
 // app.get('/', routes.index);
 
 app.get('/answer', function(req, res) {
-  res.render('index', { locals: { port: app.get('port'),title:"GMOメディアオールスター感謝祭" } });
+  res.render('index', { locals: { port: app.get('port'),title:"メディアオールスター感謝祭" } });
 });
 
 app.get('/question', function(req, res) {
